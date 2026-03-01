@@ -15,7 +15,8 @@ export const createClient = () => {
                 signInWithPassword: async () => ({ error: new Error("Supabase não configurado") }),
                 signUp: async () => ({ error: new Error("Supabase não configurado") }),
             }
-        } as unknown;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any;
     }
 
     return createBrowserClient(url, key);
