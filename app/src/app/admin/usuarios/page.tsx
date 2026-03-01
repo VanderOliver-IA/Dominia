@@ -129,7 +129,7 @@ export default function AdminUsersPage() {
                                                 <div className="font-semibold text-surface-100 flex items-center gap-2">
                                                     {user.display_name}
                                                     {user.is_admin && (
-                                                        <Shield className="w-3.5 h-3.5 text-error-400" title="Administrador" />
+                                                        <Shield className="w-3.5 h-3.5 text-error-400" />
                                                     )}
                                                 </div>
                                                 <div className="text-xs text-surface-500">@{user.username}</div>
