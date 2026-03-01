@@ -15,7 +15,7 @@ export const createClient = () => {
                 signInWithPassword: async () => ({ error: new Error("Supabase não configurado") }),
                 signUp: async () => ({ error: new Error("Supabase não configurado") }),
             }
-        } as any;
+        } as unknown;
     }
 
     return createBrowserClient(url, key);

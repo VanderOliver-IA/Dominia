@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { LessonData } from "@/types/game";
 import { useUserStore } from "@/store/useUserStore";
 import QuizChallenge from "./QuizChallenge";
+import ArrangeChallenge from "./ArrangeChallenge";
 import Button from "@/components/ui/Button";
 
 interface GameEngineProps {
@@ -18,7 +19,7 @@ export default function GameEngine({ lesson }: GameEngineProps) {
     const { profile, updateXP, loseHeart } = useUserStore();
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+    const [selectedOption, setSelectedOption] = useState<string | string[] | null>(null);
     const [status, setStatus] = useState<"playing" | "correct" | "wrong" | "finished">("playing");
 
     const challenge = lesson.challenges[currentIndex];
@@ -28,7 +29,17 @@ export default function GameEngine({ lesson }: GameEngineProps) {
     const handleVerify = () => {
         if (!selectedOption) return;
 
-        if (selectedOption === challenge.correctAnswer) {
+        let isCorrect = false;
+
+        if (Array.isArray(challenge.correctAnswer) && Array.isArray(selectedOption)) {
+            // Verificação para Arrange Challenge (arrays devem ser idênticos)
+            isCorrect = JSON.stringify(challenge.correctAnswer) === JSON.stringify(selectedOption);
+        } else {
+            // Verificação normal (strings)
+            isCorrect = selectedOption === challenge.correctAnswer;
+        }
+
+        if (isCorrect) {
             // Acertou!
             setStatus("correct");
             // Damos um pedacinho de XP intermediário? Ou só no fim?
@@ -110,9 +121,17 @@ export default function GameEngine({ lesson }: GameEngineProps) {
                 {challenge.type === "quiz" && (
                     <QuizChallenge
                         challenge={challenge}
-                        selectedOption={selectedOption}
+                        selectedOption={selectedOption as string}
                         onSelect={setSelectedOption}
-                        status={status as "playing" | "correct" | "wrong"}
+                        status={status}
+                    />
+                )}
+
+                {challenge.type === "arrange" && (
+                    <ArrangeChallenge
+                        challenge={challenge}
+                        status={status}
+                        onSelectionChange={setSelectedOption}
                     />
                 )}
             </main>
