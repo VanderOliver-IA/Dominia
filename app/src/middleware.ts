@@ -4,10 +4,16 @@ import { NextResponse, type NextRequest } from "next/server";
 export async function middleware(request: NextRequest) {
     let supabaseResponse = NextResponse.next({ request });
 
-    const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
+    try {
+        const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+        if (!url || !key) {
+            console.error("Middleware: Variáveis do Supabase não encontradas.");
+            return supabaseResponse;
+        }
+
+        const supabase = createServerClient(url, key, {
             cookies: {
                 getAll() {
                     return request.cookies.getAll();
@@ -22,31 +28,34 @@ export async function middleware(request: NextRequest) {
                     );
                 },
             },
+        });
+
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+
+        const isAuthPage = request.nextUrl.pathname.startsWith("/auth");
+        const isDashboard = request.nextUrl.pathname.startsWith("/dashboard");
+
+        if (!user && isDashboard) {
+            const redirectUrl = request.nextUrl.clone();
+            redirectUrl.pathname = "/auth";
+            return NextResponse.redirect(redirectUrl);
         }
-    );
 
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
+        if (user && isAuthPage) {
+            const redirectUrl = request.nextUrl.clone();
+            redirectUrl.pathname = "/dashboard";
+            return NextResponse.redirect(redirectUrl);
+        }
 
-    const isAuthPage = request.nextUrl.pathname.startsWith("/auth");
-    const isDashboard = request.nextUrl.pathname.startsWith("/dashboard");
-
-    // Se não logado e tentando acessar o dashboard → redireciona para /auth
-    if (!user && isDashboard) {
-        const url = request.nextUrl.clone();
-        url.pathname = "/auth";
-        return NextResponse.redirect(url);
+        return supabaseResponse;
+    } catch (err) {
+        console.error("Erro no middleware do Supabase:", err);
+        // Em caso de erro (ex: URL mal formatada na Vercel), deixa a requisição passar sem crashar 500.
+        // A página no cliente lidará com o estado deslogado/erro.
+        return supabaseResponse;
     }
-
-    // Se logado e tentando acessar /auth → redireciona para /dashboard
-    if (user && isAuthPage) {
-        const url = request.nextUrl.clone();
-        url.pathname = "/dashboard";
-        return NextResponse.redirect(url);
-    }
-
-    return supabaseResponse;
 }
 
 export const config = {
