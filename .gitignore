@@ -1,0 +1,22 @@
+# Next.js / Node
+app/node_modules/
+app/.next/
+app/out/
+app/build/
+app/.env*
+app/.DS_Store
+*.log
+
+# Antigravity Git
+.agent/
+.gemini/
+.env
+.DS_Store
+
+# Brain / Artifacts
+brain/
+artifacts/
+
+# System
+*.tmp
+/tmp/
