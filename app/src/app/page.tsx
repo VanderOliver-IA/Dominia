@@ -1,6 +1,6 @@
 "use client";
-
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   Zap,
   Gamepad2,
@@ -223,12 +223,16 @@ export default function LandingPage() {
             </a>
           </nav>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" aria-label="Entrar na conta">
-              Entrar
-            </Button>
-            <Button size="sm" aria-label="Começar a aprender IA gratuitamente">
-              Começar Grátis
-            </Button>
+            <Link href="/auth">
+              <Button variant="ghost" size="sm" aria-label="Entrar na conta">
+                Entrar
+              </Button>
+            </Link>
+            <Link href="/auth">
+              <Button size="sm" aria-label="Começar a aprender IA gratuitamente">
+                Começar Grátis
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
@@ -261,11 +265,13 @@ export default function LandingPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-            <Button size="lg">
-              <Rocket className="w-5 h-5" />
-              Começar Grátis
-              <ArrowRight className="w-4 h-4" />
-            </Button>
+            <Link href="/auth">
+              <Button size="lg">
+                <Rocket className="w-5 h-5" />
+                Começar Grátis
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
             <Button variant="secondary" size="lg">
               <Gamepad2 className="w-5 h-5" />
               Ver como funciona
@@ -595,9 +601,11 @@ export default function LandingPage() {
                     </li>
                   ))}
                 </ul>
-                <Button variant="secondary" fullWidth>
-                  Começar Grátis
-                </Button>
+                <Link href="/auth" className="block w-full">
+                  <Button variant="secondary" fullWidth>
+                    Começar Grátis
+                  </Button>
+                </Link>
               </Card>
             </motion.div>
 
@@ -638,10 +646,12 @@ export default function LandingPage() {
                     </li>
                   ))}
                 </ul>
-                <Button fullWidth size="lg">
-                  <Crown className="w-4 h-4" />
-                  Começar Trial de 7 Dias
-                </Button>
+                <Link href="/auth" className="block w-full">
+                  <Button fullWidth size="lg">
+                    <Crown className="w-4 h-4" />
+                    Começar Trial de 7 Dias
+                  </Button>
+                </Link>
               </Card>
             </motion.div>
           </motion.div>
@@ -668,11 +678,13 @@ export default function LandingPage() {
             Junte-se a milhares de pessoas que estão aprendendo IA de forma
             divertida e viciante. Sua primeira lição é grátis.
           </p>
-          <Button size="lg">
-            <Rocket className="w-5 h-5" />
-            Começar Minha Jornada
-            <ArrowRight className="w-4 h-4" />
-          </Button>
+          <Link href="/auth">
+            <Button size="lg">
+              <Rocket className="w-5 h-5" />
+              Começar Minha Jornada
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
         </motion.div>
       </section>
 
