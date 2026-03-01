@@ -36,13 +36,29 @@ export async function middleware(request: NextRequest) {
 
         const isAuthPage = request.nextUrl.pathname.startsWith("/auth");
         const isDashboard = request.nextUrl.pathname.startsWith("/dashboard");
+        const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
 
-        if (!user && isDashboard) {
+        if (!user && (isDashboard || isAdminRoute)) {
             const redirectUrl = request.nextUrl.clone();
             redirectUrl.pathname = "/auth";
             return NextResponse.redirect(redirectUrl);
         }
 
+        // Se for rota de admin, precisamos ter certeza que ele é admin
+        if (user && isAdminRoute) {
+            const { data: profile } = await supabase
+                .from("profiles")
+                .select("is_admin")
+                .eq("id", user.id)
+                .single();
+
+            if (!profile?.is_admin) {
+                // Usuário comum tentando acessar o painel de admin -> joga pro dashboard
+                const redirectUrl = request.nextUrl.clone();
+                redirectUrl.pathname = "/dashboard";
+                return NextResponse.redirect(redirectUrl);
+            }
+        }
         if (user && isAuthPage) {
             const redirectUrl = request.nextUrl.clone();
             redirectUrl.pathname = "/dashboard";
@@ -59,5 +75,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/dashboard/:path*", "/auth/:path*"],
+    matcher: ["/dashboard/:path*", "/auth/:path*", "/admin/:path*"],
 };
