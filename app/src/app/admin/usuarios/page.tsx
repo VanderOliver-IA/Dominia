@@ -143,7 +143,7 @@ export default function AdminUsersPage() {
                                                 <CrownIcon className="w-3 h-3" /> VIP Premium
                                             </Badge>
                                         ) : (
-                                            <Badge variant="secondary" size="sm">
+                                            <Badge variant="default" size="sm">
                                                 Grátis
                                             </Badge>
                                         )}
