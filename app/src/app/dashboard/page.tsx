@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
     Flame,
     Heart,
@@ -159,31 +160,33 @@ export default function DashboardPage() {
 
                     <div className="space-y-3">
                         {recentTrails.map((trail, i) => (
-                            <Card key={i} hover className="cursor-pointer group">
-                                <div className="flex items-center gap-4">
-                                    <div
-                                        className={`w-12 h-12 rounded-xl bg-gradient-to-br ${trail.color} flex items-center justify-center shrink-0 shadow-lg`}
-                                    >
-                                        <BookOpen className="w-6 h-6 text-white" />
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-center justify-between mb-1">
-                                            <h3 className="font-semibold text-sm text-surface-100 truncate">
-                                                {trail.title}
-                                            </h3>
-                                            <Badge variant="default" size="sm">
-                                                {trail.lessons}
-                                            </Badge>
+                            <Link key={i} href="/dashboard/licao/demo" className="block">
+                                <Card hover className="cursor-pointer group">
+                                    <div className="flex items-center gap-4">
+                                        <div
+                                            className={`w-12 h-12 rounded-xl bg-gradient-to-br ${trail.color} flex items-center justify-center shrink-0 shadow-lg`}
+                                        >
+                                            <BookOpen className="w-6 h-6 text-white" />
                                         </div>
-                                        <Progress value={trail.progress} size="sm" />
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center justify-between mb-1">
+                                                <h3 className="font-semibold text-sm text-surface-100 truncate">
+                                                    {trail.title}
+                                                </h3>
+                                                <Badge variant="default" size="sm">
+                                                    {trail.lessons}
+                                                </Badge>
+                                            </div>
+                                            <Progress value={trail.progress} size="sm" />
+                                        </div>
+                                        <div className="hidden sm:flex items-center gap-1 text-xs text-xp-400">
+                                            <Star className="w-3.5 h-3.5" />
+                                            {trail.xp} XP
+                                        </div>
+                                        <ArrowRight className="w-4 h-4 text-surface-500 group-hover:text-brand-400 group-hover:translate-x-1 transition-all shrink-0" />
                                     </div>
-                                    <div className="hidden sm:flex items-center gap-1 text-xs text-xp-400">
-                                        <Star className="w-3.5 h-3.5" />
-                                        {trail.xp} XP
-                                    </div>
-                                    <ArrowRight className="w-4 h-4 text-surface-500 group-hover:text-brand-400 group-hover:translate-x-1 transition-all shrink-0" />
-                                </div>
-                            </Card>
+                                </Card>
+                            </Link>
                         ))}
                     </div>
                 </motion.div>
@@ -208,8 +211,8 @@ export default function DashboardPage() {
                                     <div className="flex items-center gap-3">
                                         <div
                                             className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${done
-                                                    ? "bg-xp-500/20"
-                                                    : "bg-surface-800"
+                                                ? "bg-xp-500/20"
+                                                : "bg-surface-800"
                                                 }`}
                                         >
                                             <mission.icon
@@ -219,8 +222,8 @@ export default function DashboardPage() {
                                         <div className="flex-1 min-w-0">
                                             <p
                                                 className={`text-sm font-medium ${done
-                                                        ? "line-through text-surface-500"
-                                                        : "text-surface-200"
+                                                    ? "line-through text-surface-500"
+                                                    : "text-surface-200"
                                                     }`}
                                             >
                                                 {mission.title}
@@ -253,10 +256,10 @@ export default function DashboardPage() {
                                     <p className="text-[10px] text-surface-500 mb-1">{day}</p>
                                     <div
                                         className={`w-full aspect-square rounded-lg ${[0, 1, 2, 4].includes(i)
-                                                ? "bg-brand-500/30 border border-brand-500/20"
-                                                : i === 5
-                                                    ? "bg-brand-500/10 border border-surface-800"
-                                                    : "bg-surface-800/50 border border-surface-800"
+                                            ? "bg-brand-500/30 border border-brand-500/20"
+                                            : i === 5
+                                                ? "bg-brand-500/10 border border-surface-800"
+                                                : "bg-surface-800/50 border border-surface-800"
                                             }`}
                                     />
                                 </div>
