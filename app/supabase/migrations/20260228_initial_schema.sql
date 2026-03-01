@@ -77,7 +77,7 @@ alter table public.user_progress enable row level security;
 create policy "Public profiles are viewable by everyone" on public.profiles
   for select using (true);
 create policy "Users can update own profile" on public.profiles
-  for update using (auth.uid() = id);
+  for update using ((select auth.uid()) = id);
 
 -- Policies: Trails & Lessons (Todos lêem o que estiver publicado)
 create policy "Anyone can view published trails" on public.trails
@@ -87,11 +87,11 @@ create policy "Anyone can view lessons" on public.lessons
 
 -- Policies: Progress (Apenas o próprio usuário acessa seu progresso)
 create policy "Users can view own progress" on public.user_progress
-  for select using (auth.uid() = user_id);
+  for select using ((select auth.uid()) = user_id);
 create policy "Users can insert own progress" on public.user_progress
-  for insert with check (auth.uid() = user_id);
+  for insert with check ((select auth.uid()) = user_id);
 create policy "Users can update own progress" on public.user_progress
-  for update using (auth.uid() = user_id);
+  for update using ((select auth.uid()) = user_id);
 
 -- 8. FUNCTIONS & TRIGGERS (Auto-criação de perfil)
 create function public.handle_new_user()
